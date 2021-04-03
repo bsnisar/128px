@@ -1,0 +1,5 @@
+<query-profile id="main" >
+    <field name="yql">select * from stash where lastUpdateTs > 0 %{extra_filter};</field>
+    <field name="extra_filter" />
+    <field name="hits">100</field>
+</query-profile>

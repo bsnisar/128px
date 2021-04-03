@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<services version='1.0' xmlns:deploy="vespa" xmlns:preprocess="properties">
+
+  <container id='default' version='1.0'>
+
+    <search>
+      <chain id='user' inherits='vespa'>
+        <!-- <searcher bundle='blog-recommendation' id='com.yahoo.example.UserProfileSearcher' /> -->
+      </chain>
+    </search>
+    <document-api/>
+    <nodes>
+      <node hostalias='node1'/>
+    </nodes>
+  </container>
+
+  <content id='content' version='1.0'>
+    <redundancy>1</redundancy>
+    <documents>
+      <document mode='index' type='stash'/>
+      <document mode='index' type='user'/>
+    </documents>
+    <nodes>
+      <node hostalias='node1' distribution-key='0'/>
+    </nodes>
+  </content>
+
+</services>

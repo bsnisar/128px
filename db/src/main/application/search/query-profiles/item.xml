@@ -1,0 +1,5 @@
+<query-profile id="item" >
+    <field name="yql">select * from stash where guid contains '%{guid}';</field>
+    <field name="hits">1</field>
+    <field name="guid"></field>
+</query-profile>

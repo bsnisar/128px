@@ -1,0 +1,6 @@
+<query-profile-type id="root" inherits="native">
+    <field name="ranking.features.query(user_item_cf)" type="tensor&lt;float&gt;(d0[1],d1[10])" />
+    <field name="ranking.features.query(img_embed_param)" type="tensor&lt;float&gt;(x[128])" />
+    <field name="extra_filter" type="string" />
+    <field name="guid" type="string" />
+</query-profile-type>

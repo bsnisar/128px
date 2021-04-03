@@ -1,0 +1,114 @@
+
+schema stash {
+
+    document stash {
+
+        field description type string {
+            indexing: summary | index
+        }
+
+        field guid type string {
+            indexing: summary | attribute
+            rank: filter
+        }
+
+        field binaryGuid type string {
+            indexing: summary | attribute
+            rank: filter
+        }
+
+        field publishTs type long {
+            indexing: summary | attribute
+        }
+
+        struct keyword {
+            field tag type string {}
+            field suggestedByUser type int {}
+            field aiServiceConfidence1 type float {}
+        }
+
+        field keywords type map<string, keyword> {
+            indexing: summary
+            struct-field key { indexing: index | attribute }
+        }
+
+        field metadata type raw {
+          indexing: summary
+        }
+
+        field imgEmbedding type tensor<float>(x[128]) {
+          indexing: summary | attribute | index
+          attribute {
+            distance-metric: angular
+          }
+          index {
+            hnsw {
+              max-links-per-node: 24
+              neighbors-to-explore-at-insert: 500
+            }
+          }
+        }
+
+        # utilities
+
+        field lastUpdateTs type long {
+            indexing: summary | attribute
+        }
+
+        field createTs type long {
+            indexing: summary | attribute
+        }
+
+
+    }
+
+    fieldset default {
+        fields: description
+    }
+
+    document-summary base_view {
+        summary description type string {}
+        summary publishTs type long {}
+        summary binaryGuid type string {}
+        summary guid type string {}
+    }
+
+    document-summary base_view_with_embedding inherits base_view {
+        summary imgEmbedding type tensor<float>(x[128]) {}
+    }
+
+    rank-profile newest inherits default {
+        rank-properties {
+          # Pre-configured weights, can be overridden at query time
+          $textMatchWeight: 0.4
+          $qualityWeight: 0.3
+          $deservesFreshness: 0.3
+
+          #  Example of nativeRank tuning, override the occurrence boost shape to be flat
+          #  nativeFieldMatch.occurrenceCountTable.title: "linear(0,8000)"
+        }
+
+        function freshnessLogisticScore() {
+            expression: exp(-1 * age(publishTs)/(3600*12))
+        }
+
+        function matchScore() {
+            expression: nativeRank(description)
+        }
+
+        function keywordsScore() {
+            expression: attributeMatch(keywords.key)
+        }
+
+        first-phase {
+            expression: matchScore() + freshnessLogisticScore() + keywordsScore()
+        }
+    }
+
+    rank-profile ann_rank inherits default {
+        first-phase {
+            expression: closeness(field, imgEmbedding)
+        }
+    }
+
+}

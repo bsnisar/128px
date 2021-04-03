@@ -1,0 +1,22 @@
+@import vespa.api.Hit
+@import vespa.models.Photo
+
+@(photos: Iterable[Hit[Photo]])
+
+@main("Photos") {
+  <main class="container mx-auto ">
+    <section class="masonry  -mx-1 lg:-mx-4">
+      @for(photo <- photos) {
+        <div class="relative cursor-pointer  my-1 px-1   brick">
+          <article class="overflow-hidden rounded-lg shadow-md">
+            <a href="@routes.HomeController.item(photo.value.guid)">
+              <img alt="image" class="block h-auto w-full max-w-m rounded"
+                  src="@routes.PhotoAssetsController.image(photo.value.binaryGuid, "M")"
+              >
+            </a>
+          </article>
+        </div>
+      }
+    </section>
+  </main>
+}

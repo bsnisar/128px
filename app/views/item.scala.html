@@ -1,0 +1,38 @@
+@import vespa.models.PhotosSimilar
+@(photo: PhotosSimilar)
+
+@main(s"${photo.item.description.getOrElse("photo")}") {
+  <main class="container mx-auto ">
+    <figure class=" rounded-xl p-8">
+
+      <img alt="image" class="block h-auto w-1/2 mx-auto rounded"
+           src="@routes.PhotoAssetsController.image(photo.item.binaryGuid, "Full")"
+      >
+
+      <div class="pt-6 space-y-4">
+        <blockquote>
+          <p class="text-lg font-semibold">
+            @photo.item.description.getOrElse("N/A")
+          </p>
+        </blockquote>
+      </div>
+    </figure>
+
+    <br/>
+
+    <section class="masonry  -mx-1 lg:-mx-4">
+    @for(photo <- photo.moreLikeThis) {
+      <div class="relative cursor-pointer  my-1 px-1   brick">
+        <article class="overflow-hidden rounded-lg shadow-md">
+          <a href="@routes.HomeController.item(photo.guid)">
+            <img alt="image" class="block h-auto w-full rounded"
+            src="@routes.PhotoAssetsController.image(photo.binaryGuid, "M")"
+            >
+          </a>
+        </article>
+      </div>
+    }
+    </section>
+
+  </main>
+}

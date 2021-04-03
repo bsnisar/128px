@@ -1,0 +1,13 @@
+
+schema user {
+
+    document user {
+
+        field uuid type string {
+            indexing: summary | attribute
+            attribute: fast-search
+        }
+
+    }
+
+}
