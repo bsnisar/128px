@@ -1,20 +1,45 @@
-@()
-<nav class="container p-10 mt-6 mb-6 mx-auto">
-    <div class="flex items-center justify-between flex-wrap ">
-        <div class="block lg:hidden">
-            <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
-                <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
-            </button>
-        </div>
+@import controllers.MyForms.SearchTerm
+@import views.MoreHelpers.noLabel
+@import helper._
 
-        <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto 	">
-            <div class="text-m ">
-                <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-                    About
-                </a>
-            </div>
-        </div>
+
+@(f: Form[SearchTerm] = MyForms.searchForm)(implicit messages: Messages)
+<nav class="bg-white relative z-40 w-full h-24 px-12 flex justify-between items-center">
+
+    <div class="w-full lg:w-auto">
+        <a href="/" class="font-mono text-2xl block text-center text-black text-lg no-underline hover:text-gray-600">128<small class="text-purple-800"><b>px</b></small></a>
     </div>
 
+    <div class="flex-1 flex justify-center lg:justify-end">
+
+        <div class="w-full  text-center md:text-right pb-4 md:p-0 mr-8 ">
+            @helper.form(action = routes.HomeController.search) {
+                @helper.input(f("value")) { (id, name, _, args) =>
+                    <input  type="text" placeholder="Search..." class="bg-gray-200 border text-m p-1" name="@name" id="@id" @toHtmlArgs(args)>
+                }
+            }
+        </div>
+
+    </div>
 
 </nav>
+
+@*<nav class="container p-10 mt-6 mb-6 mx-auto">*@
+@*    <div class="flex items-center justify-between flex-wrap ">*@
+@*        <div class="block lg:hidden">*@
+@*            <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">*@
+@*                <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>*@
+@*            </button>*@
+@*        </div>*@
+
+@*        <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto 	">*@
+@*            <div class="text-m ">*@
+@*                <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">*@
+@*                    About*@
+@*                </a>*@
+@*            </div>*@
+@*        </div>*@
+@*    </div>*@
+
+
+@*</nav>*@

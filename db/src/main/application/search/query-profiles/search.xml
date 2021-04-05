@@ -1,0 +1,11 @@
+<query-profile id="search" >
+    <field name="yql">select * from stash where
+        ([{"grammar": "any","stem": true}]userInput(@searchTerms)) OR
+            keywords contains sameElement(key contains '%{searchTerms}')
+        %{extra_filter} ;
+
+    </field>
+    <field name="hits">45</field>
+    <field name="searchTerms"></field>
+    <field name="extra_filter"></field>
+</query-profile>

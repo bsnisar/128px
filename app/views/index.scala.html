@@ -1,7 +1,7 @@
-@import vespa.api.Hit
-@import vespa.models.Photo
+@import models.Hit
+@import models.Photo
 
-@(photos: Iterable[Hit[Photo]])
+@(photos: Iterable[Hit[Photo]])(implicit messages: Messages)
 
 @main("Photos") {
   <main class="container mx-auto ">

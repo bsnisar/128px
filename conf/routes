@@ -4,8 +4,9 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                                 controllers.HomeController.index()
-GET     /stash/:id                        controllers.HomeController.item(id: String)
+GET     /                                 controllers.HomeController.index(offset: Option[Int])
+GET     /photos/:id                       controllers.HomeController.item(id: String)
+GET    /_search/photos                    controllers.HomeController.search
 
 GET     /image-assets/:id               controllers.PhotoAssetsController.image(id: String, size: String)
 

@@ -59,7 +59,6 @@ schema stash {
             indexing: summary | attribute
         }
 
-
     }
 
     fieldset default {
@@ -71,22 +70,15 @@ schema stash {
         summary publishTs type long {}
         summary binaryGuid type string {}
         summary guid type string {}
+        summary keywords type map<string, keyword> {}
     }
 
     document-summary base_view_with_embedding inherits base_view {
         summary imgEmbedding type tensor<float>(x[128]) {}
+        summary metadata type raw {}
     }
 
     rank-profile newest inherits default {
-        rank-properties {
-          # Pre-configured weights, can be overridden at query time
-          $textMatchWeight: 0.4
-          $qualityWeight: 0.3
-          $deservesFreshness: 0.3
-
-          #  Example of nativeRank tuning, override the occurrence boost shape to be flat
-          #  nativeFieldMatch.occurrenceCountTable.title: "linear(0,8000)"
-        }
 
         function freshnessLogisticScore() {
             expression: exp(-1 * age(publishTs)/(3600*12))

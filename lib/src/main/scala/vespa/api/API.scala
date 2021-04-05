@@ -36,6 +36,8 @@ object Reads {
   }
 }
 
+case class Embedding(tokens: Array[Float])
+
 case class Hits[V](total: Long, children: IndexedSeq[Hit[V]])
 
 case class Hit[V](relevance: Double, value: V)

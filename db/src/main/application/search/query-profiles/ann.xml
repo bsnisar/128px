@@ -1,6 +1,0 @@
-<query-profile id="ann" >
-    <field name="extra_filter" />
-    <field name="hits">45</field>
-    <field name="ranking.profile">ann_rank</field>
-    <field name="presentation.summary">base_view</field>
-</query-profile>

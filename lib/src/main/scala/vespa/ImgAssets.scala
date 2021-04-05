@@ -38,7 +38,7 @@ class ImgAssetsDefault(partitioner: IPartitioner = new PartitionerDefault,
   private val mainImageFile = "index.jpeg"
   private val w356ImageFile = "index-w-640.jpeg"
 
-  private implicit val expensiveIoLookups: ExecutionContext =
+  private implicit lazy val expensiveIoLookups: ExecutionContext =
     as.dispatchers.lookup("contexts.img-io-ops")
 
   /**

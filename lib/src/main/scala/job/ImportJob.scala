@@ -18,7 +18,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.control.NonFatal
 
 //noinspection TypeAnnotation
-object ImportJob extends App {
+object ImportJob /*extends App*/ {
   implicit val as = ActorSystem()
   implicit val m = ActorMaterializer()
 

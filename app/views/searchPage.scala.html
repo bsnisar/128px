@@ -1,0 +1,7 @@
+@import models.Hit
+@import models.Photo
+
+@(photos: Iterable[Hit[Photo]], value: String)(implicit messages: Messages)
+  @index(photos)
+
+

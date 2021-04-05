@@ -3,4 +3,5 @@
     <field name="ranking.features.query(img_embed_param)" type="tensor&lt;float&gt;(x[128])" />
     <field name="extra_filter" type="string" />
     <field name="guid" type="string" />
+    <field name="searchTerms" type="string" />
 </query-profile-type>

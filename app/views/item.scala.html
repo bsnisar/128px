@@ -1,21 +1,40 @@
-@import vespa.models.PhotosSimilar
-@(photo: PhotosSimilar)
+@import models.SimilarPhotosView
+@(photo: SimilarPhotosView)(implicit messages: Messages)
 
 @main(s"${photo.item.description.getOrElse("photo")}") {
   <main class="container mx-auto ">
-    <figure class=" rounded-xl p-8">
+    <figure class=" lg:h-screen -mt-24 lg:pt-24 w-full flex flex-wrap rounded-xl p-8">
 
-      <img alt="image" class="block h-auto w-1/2 mx-auto rounded"
-           src="@routes.PhotoAssetsController.image(photo.item.binaryGuid, "Full")"
-      >
 
-      <div class="pt-6 space-y-4">
-        <blockquote>
-          <p class="text-lg font-semibold">
-            @photo.item.description.getOrElse("N/A")
-          </p>
-        </blockquote>
+      <div class="h-screen w-full lg:h-full lg:w-1/2 flex justify-center items-center">
+
+        <div class="max-w-xl px-12 lg:px-32">
+          <div class="mb-8">
+            <h1 class="text-xl md:text-xl leading-normal  font-serif">@{s"${photo.item.description.getOrElse("unknown")}"}</h1>
+            <h5 class="text-m mt-3 leading-normal font-serif text-gray-700">from <a class="text-sm"
+            href="@{photo.item.href.getOrElse("https://unsplash.com/")}">Unsplash</a> @@ @{photo.item.publishTsFmt} </h5>
+
+
+            <div class="mt-4 -ml-4 inline-flex flex-wrap">
+
+            @for( (tag,_) <- photo.item.userKeywords() ) {
+              <div class=" text-xs font-bold leading-sm px-3 py-1 rounded-full bg-white text-gray-700 ">
+                #@{tag}
+              </div>
+            }
+
+            </div>
+          </div>
+
+
+        </div>
       </div>
+
+
+      <div class="h-screen w-full lg:h-full lg:w-1/2 relative">
+        <img alt="image" class="bw-full h-full rounded" src="@routes.PhotoAssetsController.image(photo.item.binaryGuid, "Full")">
+      </div>
+
     </figure>
 
     <br/>

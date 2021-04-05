@@ -1,6 +1,7 @@
 package job
 
 import java.nio.file.Paths
+import java.util.concurrent.atomic.AtomicLong
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
@@ -16,6 +17,7 @@ import vespa.models.{Embedding, StockCommandUpdate}
 import scala.util.control.NonFatal
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.{Failure, Success}
 
 //noinspection TypeAnnotation
 object ImportEmbeddingsJob extends App  {
@@ -25,6 +27,8 @@ object ImportEmbeddingsJob extends App  {
   val log = LoggerFactory.getLogger("import-job")
 
   val ps = new PhotoStock(new ImgAssetsDefault(), AhcWSClient())
+
+  val count = new AtomicLong()
 
   FileIO.fromPath(Paths.get(s"${sys.props("user.home")}/unsplash/embeddings.csv"))
     .via(CsvParsing.lineScanner(delimiter = CsvParsing.Comma))
@@ -42,9 +46,17 @@ object ImportEmbeddingsJob extends App  {
         )
       )
 
-      ps.add(cmd).recover {
+      val done = ps.add(cmd).recover {
         case NonFatal(e) => log.error(s"Error; id=${guid}",e)
       }
+
+      done.onComplete {
+        case Success(_) if count.incrementAndGet() % 700 == 0 =>
+          println("process...next 700")
+        case _ => ()
+      }
+
+      done
     })
     //.log("import")
     .run()
