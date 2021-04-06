@@ -4,7 +4,7 @@ import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.test._
 import play.api.test.Helpers._
-import vespa.IParaStash
+//import vespa.IParaStash
 
 import scala.concurrent.ExecutionContext.Implicits.global
 

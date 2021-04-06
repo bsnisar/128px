@@ -5,12 +5,14 @@ version := "1.0-SNAPSHOT"
 
 
 lazy val root = (project in file("."))
-  .aggregate(lib)
-  .dependsOn(lib)
+  .aggregate(lib, api)
+  .dependsOn(lib, api)
   .enablePlugins(PlayScala, PlayAkkaHttp2Support)
 
 lazy val lib = project.in(file("lib"))
+  .enablePlugins(ProtobufPlugin)
 
+lazy val api = (project in file("api"))
 
 scalaVersion := "2.13.3"
 

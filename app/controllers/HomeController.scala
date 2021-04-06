@@ -31,7 +31,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents,
       userData => {
 
         backendClient.search(offset = 0, search = userData.value).map(h =>
-          Ok(views.html.searchPage(h.children, userData.value))
+          Ok(views.html.searchPage(h.children, userData.value
+          ))
         )
 
       }
