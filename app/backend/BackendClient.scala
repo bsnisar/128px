@@ -1,5 +1,7 @@
 package backend
 
+import java.net.URL
+
 import javax.inject.Inject
 import models.Hits.Photos
 import play.api.libs.json.{JsObject, JsValue, Json, Reads}
@@ -11,13 +13,14 @@ import scala.concurrent.duration._
 
 trait BackendClient {
   def photo(id: String): Future[Option[Photo]]
+  def similarByExample(url: URL): Future[Photos]
   def similar(id: Embedding): Future[Photos]
   def brows(limit: Int, offset: Int): Future[Photos]
   def search(limit: Int = 45, offset: Int, search: String): Future[Photos]
 }
 
 
-class VespaBackendClient @Inject() (ws: WSClient)(implicit d: ExecutionContext) extends BackendClient {
+class VespaBackendClient @Inject() (ws: WSClient, mlOps: MLOpsClient)(implicit d: ExecutionContext) extends BackendClient {
   private val vespaUrl = "http://localhost:8080/search/"
 
   override def photo(id: String): Future[Option[Photo]] = {
@@ -51,7 +54,9 @@ class VespaBackendClient @Inject() (ws: WSClient)(implicit d: ExecutionContext) 
     execute[Photo](props)
   }
 
-
+  override def similarByExample(url: URL): Future[Photos] = {
+    mlOps.encode(url).flatMap(emb => similar(emb))
+  }
 
   override def similar(p: Embedding): Future[Photos] = {
     val data = Json.obj(

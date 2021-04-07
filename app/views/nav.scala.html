@@ -5,13 +5,23 @@
 @(f: Form[SearchTerm] = MyForms.searchForm)(implicit messages: Messages)
 <nav class="bg-white relative z-40 w-full h-24 px-12 flex justify-between items-center">
 
-    <div class="w-full lg:w-auto">
+    <div class="w-full lg:w-auto flex">
         <a href="/" class="font-mono text-2xl block text-center text-black text-lg no-underline hover:text-gray-600">128<small class="text-purple-800"><b>px</b></small></a>
+
+        <ul class="flex-1 flex justify-center md:justify-end list-reset ml-10">
+            <li>
+                <a href="@routes.HomeController.byImage()" class="text-sm text-gray-800 no-underline hover:text-black">Find By Image</a>
+            </li>
+        </ul>
+
     </div>
 
-    <div class="flex-1 flex justify-center lg:justify-end">
 
+    <div class="flex-1 flex justify-center lg:justify-end">
         <div class="w-full  text-center md:text-right pb-4 md:p-0 mr-8 ">
+
+
+
             @helper.form(action = routes.HomeController.search) {
                 @helper.input(f("value")) { (id, name, _, args) =>
                     <input  type="text" placeholder="Search..." class="bg-gray-200 border text-m p-1" name="@name" id="@id" @toHtmlArgs(args)>

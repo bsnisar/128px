@@ -6,7 +6,12 @@
 # An example controller showing a sample home page
 GET     /                                 controllers.HomeController.index(offset: Option[Int])
 GET     /photos/:id                       controllers.HomeController.item(id: String)
+GET     /search-by-image                  controllers.HomeController.byImage
+
 GET    /_search/photos                    controllers.HomeController.search
+
++nocsrf
+POST   /_search/by-url                    controllers.HomeController.searchByImage
 
 GET     /image-assets/:id               controllers.PhotoAssetsController.image(id: String, size: String)
 

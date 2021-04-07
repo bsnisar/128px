@@ -13,8 +13,9 @@ libraryDependencies ++= Seq(
   logback
 )
 libraryDependencies += "ai.djl" % "api" % "0.10.0"
-libraryDependencies += "ai.djl.pytorch" % "pytorch-engine" % "0.10.0" % "runtime"
 libraryDependencies += "ai.djl.pytorch" % "pytorch-model-zoo" % "0.10.0"
+
+libraryDependencies += "ai.djl.pytorch" % "pytorch-engine" % "0.10.0" % "runtime"
 libraryDependencies += "ai.djl.pytorch" % "pytorch-native-auto" % "1.7.1" % "runtime"
 //libraryDependencies += "ai.djl.pytorch" % "pytorch-native-cpu" % "1.7.1" % "runtime" classifier "osx-x86_64"
 

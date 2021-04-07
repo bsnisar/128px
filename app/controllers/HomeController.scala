@@ -1,11 +1,14 @@
 package controllers
 
+import java.net.URL
+
 import backend.BackendClient
 import javax.inject._
 import models.SimilarPhotosView
 import play.api._
 import play.api.i18n.{Lang, Messages}
 import play.api.mvc._
+import play.filters.csrf.CSRF
 import vespa.PhotoStock
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -21,6 +24,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents,
                               (implicit ec: ExecutionContext) extends BaseController {
 
   implicit val messages: Messages = messagesApi.preferred(Seq(Lang.defaultLang))
+
 
   def search: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     MyForms.searchForm.bindFromRequest.fold(
@@ -69,4 +73,23 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents,
       case Some(f) => f.map(Some(_))
       case None    => Future.successful(None)
     }
+
+
+  def byImage: Action[AnyContent] = Action { implicit request: Request[_] =>
+    Ok(views.html.findByImage())
+  }
+
+  def searchByImage: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    MyForms.searchByUrlForm.bindFromRequest.fold(
+      formWithErrors => {
+        // binding failure, you retrieve the form containing errors:
+        Future.successful(BadRequest("nope"))
+      },
+      userData => {
+        backendClient.similarByExample(new URL(userData.url)).map(h =>
+          Ok(views.html.index(h.children))
+        )
+      }
+    )
+  }
 }

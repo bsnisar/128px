@@ -21,7 +21,7 @@ case class ImageEmbeddingsDJL(modelPath: Path) extends ImageEmbeddings {
   }
   private lazy val translator = new ImgToTensorTranslator
 
-  override def image(r: ImageMLOpsRequest): Try[ImageMLOpsResponse] = Try {
+  override def image(r: CalculateEmbeddingRequest): Try[CalculateEmbeddingResponse] = Try {
     val predictor = aModel.newPredictor(translator)
     val img = ImageFactory.getInstance.fromUrl(r.downloadUrl)
     val output = predictor.predict(img)
@@ -30,11 +30,9 @@ case class ImageEmbeddingsDJL(modelPath: Path) extends ImageEmbeddings {
 }
 
 
-class ImgToTensorTranslator extends BaseImageTranslator[ImageMLOpsResponse](new ImgToTensorTranslator.Builder()) {
-  override def processOutput(ctx: TranslatorContext, list: NDList): ImageMLOpsResponse = {
-    val response = Array.ofDim[Float](128)
-    list.get(0).set(response)
-    ImageMLOpsResponse(response)
+class ImgToTensorTranslator extends BaseImageTranslator[CalculateEmbeddingResponse](new ImgToTensorTranslator.Builder()) {
+  override def processOutput(ctx: TranslatorContext, list: NDList): CalculateEmbeddingResponse = {
+    CalculateEmbeddingResponse(list.get(0).toFloatArray)
   }
 
 }

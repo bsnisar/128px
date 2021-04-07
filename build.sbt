@@ -20,6 +20,9 @@ libraryDependencies += guice
 libraryDependencies += ws
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
 
+libraryDependencies += "ai.djl.pytorch" % "pytorch-engine" % "0.10.0" % "runtime"
+libraryDependencies += "ai.djl.pytorch" % "pytorch-native-auto" % "1.7.1" % "runtime"
+
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.parashtash.controllers._"
 
