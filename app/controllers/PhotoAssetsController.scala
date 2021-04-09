@@ -4,9 +4,9 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Date
 
-import vespa.{ImgAsset, ImgAssetKey, ImgAssetPath, ImgAssets, ImageKind}
 import controllers.Assets.parseModifiedDate
 import javax.inject._
+import photos.assets._
 import play.api.mvc.ResponseHeader.basicDateFormatPattern
 import play.api.mvc._
 
@@ -23,9 +23,8 @@ class PhotoAssetsController @Inject()(val controllerComponents: ControllerCompon
       .withZone(ZoneOffset.UTC)
 
   def image(id: String, size: String = null): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    val path = ImgAssetPath(ImgAssetKey(id), ImageKind.from(size).orElse(Some(ImageKind.Full)))
     for {
-      binary <- stash.get(path)
+      binary <- stash.get(ImgAssetKey(id), ImageKind.from(size).orElse(Some(ImageKind.Full)))
     } yield {
       binary match {
         case Some(asset) =>

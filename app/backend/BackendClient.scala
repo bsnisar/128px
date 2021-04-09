@@ -20,7 +20,7 @@ trait BackendClient {
 }
 
 
-class VespaBackendClient @Inject() (ws: WSClient, mlOps: MLOpsClient)(implicit d: ExecutionContext) extends BackendClient {
+class VespaBackendClient @Inject()(ws: WSClient, embeddingService: MLOpsClient)(implicit d: ExecutionContext) extends BackendClient {
   private val vespaUrl = "http://localhost:8080/search/"
 
   override def photo(id: String): Future[Option[Photo]] = {
@@ -55,7 +55,10 @@ class VespaBackendClient @Inject() (ws: WSClient, mlOps: MLOpsClient)(implicit d
   }
 
   override def similarByExample(url: URL): Future[Photos] = {
-    mlOps.encode(url).flatMap(emb => similar(emb))
+    for {
+      emb <- embeddingService.encode(url)
+      photos <- similar(emb)
+    } yield photos
   }
 
   override def similar(p: Embedding): Future[Photos] = {

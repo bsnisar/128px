@@ -1,12 +1,11 @@
-package vespa
+package photos.assets
 
 import akka.Done
 import akka.stream.scaladsl.Source
 import akka.util.ByteString
 import play.api.libs.ws.WSClient
 
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{ExecutionContext, Future}
 
 object BinaryContent {
   case class BinaryContentUriFetchException(m: String) extends RuntimeException(m)
@@ -22,7 +21,7 @@ case class BinaryContentUri(uri: String, data: () => Future[Source[ByteString, _
 
 object BinaryContentUri {
 
-  def create(uri: String)(implicit ws: WSClient): BinaryContentUri = {
+  def create(uri: String)(implicit ws: WSClient,es: ExecutionContext): BinaryContentUri = {
     val stream = () => for {
       response <- ws.url(uri).withMethod("GET").stream()
       _ <- response.status match {
@@ -36,4 +35,3 @@ object BinaryContentUri {
     BinaryContentUri(uri, stream)
   }
 }
-

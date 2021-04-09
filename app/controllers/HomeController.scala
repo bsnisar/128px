@@ -8,8 +8,6 @@ import models.SimilarPhotosView
 import play.api._
 import play.api.i18n.{Lang, Messages}
 import play.api.mvc._
-import play.filters.csrf.CSRF
-import vespa.PhotoStock
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -19,8 +17,7 @@ import scala.concurrent.{ExecutionContext, Future}
  */
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents,
-                               val backendClient: BackendClient,
-                               val stash: PhotoStock)
+                               val backendClient: BackendClient)
                               (implicit ec: ExecutionContext) extends BaseController {
 
   implicit val messages: Messages = messagesApi.preferred(Seq(Lang.defaultLang))
